@@ -1,6 +1,5 @@
-import { useDispatch } from "react-redux";
 import apiService from "../App/apiService";
-import { setIsloading } from "../Reducers";
+import { setErrorMessage, setIsloading } from "../Reducers";
 import { HTTP_METHODS } from "../constant";
 import { Error } from "../types";
 import { store } from "../Store";
@@ -38,7 +37,9 @@ export const ApiClient = async (
     }
   } catch (error) {
     const apiError = error as Error;
-    alert(apiError.message as Error);
+    store.dispatch(setErrorMessage(apiError.message));
+    throw apiError;
+  } finally {
     store.dispatch(setIsloading(false));
   }
 };

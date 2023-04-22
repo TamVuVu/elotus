@@ -15,17 +15,17 @@ export const createUUID = () => {
 
 export const minutesToHhmm = (numberOfMinutes: number) => {
   //create duration object from moment.duration
-  var duration = moment.duration(numberOfMinutes, "minutes");
+  const duration = moment.duration(numberOfMinutes, "minutes");
 
   //calculate hours
-  var hh =
+  const hh =
     duration.years() * (365 * 24) +
     duration.months() * (30 * 24) +
     duration.days() * 24 +
     duration.hours();
 
   //get minutes
-  var mm = duration.minutes();
+  const mm = duration.minutes();
 
   //return total time in hh:mm format
   return hh + "h" + mm + "m";

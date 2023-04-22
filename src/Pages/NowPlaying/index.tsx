@@ -11,7 +11,6 @@ import { IMovie } from "../../types";
 export const NowPlaying = () => {
   const [movies, setMovies] = useState<IMovie[]>([]);
   const { config } = useSelector((state: any) => state);
-  // const LazyMovieCard = React.lazy(() => import('../../Components/MovieCard');)
   useEffect(() => {
     const getMovies = async () => {
       const res = await ApiClient(
@@ -22,12 +21,11 @@ export const NowPlaying = () => {
     };
     getMovies();
   }, []);
-  console.log(movies);
 
   if (config.isLoading) return <Spinner />;
   return (
     <div className="h-screen">
-      <h1 className="mb-3">Now Playing</h1>
+      <h1 className="mb-3 text-center font-bold">Now Playing</h1>
       <div className="body relative" id="main">
         <main className="main">
           <Row

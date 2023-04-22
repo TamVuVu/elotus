@@ -42,6 +42,11 @@ export interface ICountry {
   name: string;
 }
 
+export interface IConfigReducer {
+  isLoading: boolean;
+  errorMessage: string;
+}
+
 export interface Error {
   message?: string;
 }

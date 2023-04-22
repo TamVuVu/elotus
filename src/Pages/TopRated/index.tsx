@@ -24,7 +24,7 @@ export const TopRated = () => {
   if (config.isLoading) return <Spinner />;
   return (
     <div className="h-screen">
-      <h1 className="mb-3">Top Rated</h1>
+      <h1 className="mb-3 text-center font-bold">Top Rated</h1>
       <div className="body relative" id="main">
         <main className="main">
           <Row

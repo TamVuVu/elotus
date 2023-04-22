@@ -1,6 +1,6 @@
-import { Input, List } from "antd";
+import { Input, List, Typography } from "antd";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ApiClient } from "../../Api";
 import { HTTP_METHODS, appendApiKey } from "../../constant";
 import { IMovie } from "../../types";
@@ -13,7 +13,7 @@ export const Header = () => {
   const [isSearching, setIsSearching] = useState<boolean>(false);
   const [searchValue, setSearchValue] = useState<string>("");
   const [searchedMovies, setSearchedMovies] = useState<IMovie[]>([]);
-
+  const navigate = useNavigate();
   const suffix = (
     <label
       className="cursor-pointer"
@@ -34,15 +34,20 @@ export const Header = () => {
   };
   const onHandleSearch = async (value: string) => {
     setIsSearching(true);
-    const res = await ApiClient(
-      HTTP_METHODS.GET,
-      appendApiKey("/search/movie", "&query=" + value),
-      {
-        options: { isTriggerLoading: false },
-      }
-    );
-    setSearchedMovies(res.results);
-    setIsSearching(false);
+    try {
+      const res = await ApiClient(
+        HTTP_METHODS.GET,
+        appendApiKey("/search/movie", "&query=" + value),
+        {
+          options: { isTriggerLoading: false },
+        }
+      );
+      setSearchedMovies(res.results);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsSearching(false);
+    }
   };
 
   useEffect(() => {
@@ -53,18 +58,18 @@ export const Header = () => {
 
   return (
     <header
-      className="flex p-3 border-b-2 justify-between mb-5 flex-wrap"
+      className="flex p-3 border-b-2 justify-between mb-5 flex-wrap relative"
       style={{ backgroundColor: "rgba(3,37,65)" }}
     >
       <nav className="flex justify-center md:justify-start xl:justify-center md:w-100 gap-3">
-        <Link to={"/"} className="p-1 text-white">
-          Home
+        <Link to={"/"}>
+          <Typography className="p-1 text-white">Home</Typography>
         </Link>
         <Link to={"now-playing"}>
-          <button className="p-1 text-white">Now Playing</button>
+          <Typography className="p-1 text-white">Now Playing</Typography>
         </Link>
         <Link to={"top-rated"}>
-          <button className="p-1 text-white">Top Rated</button>
+          <Typography className="p-1 text-white">Top Rated</Typography>
         </Link>
       </nav>
       <div className="flex gap-3 w-full xl:w-6/12 md:w-6/12 sm:w-6/12">
@@ -77,32 +82,22 @@ export const Header = () => {
           suffix={suffix}
         />
       </div>
-      <div className="search-movies-results relative w-full">
+      <div className="search-movies-results absolute w-full">
         {searchedMovies.length > 0 ? (
-          <div
-            className="w-full bg-white absolute"
-            onBlur={() => {
-              console.log("blur");
-              setSearchedMovies([]);
-            }}
-            onMouseDown={(e) => e.preventDefault()}
-          >
+          <div className="w-full bg-white">
             <List
-              className="searched-list"
+              className="searched-list px-3"
               itemLayout="horizontal"
               dataSource={searchedMovies}
               renderItem={(movie) => (
                 <List.Item
-                  className="cursor-pointer hover:text-red"
+                  className="cursor-pointer hover:text-red p-3"
                   onClick={() => {
+                    navigate("../movies/" + movie.id);
                     setSearchedMovies([]);
                   }}
                 >
-                  <List.Item.Meta
-                    title={
-                      <Link to={"../movies/" + movie.id}>{movie.title}</Link>
-                    }
-                  />
+                  <List.Item.Meta title={movie.title} />
                 </List.Item>
               )}
             ></List>

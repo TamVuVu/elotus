@@ -1,0 +1,12 @@
+.search-movies-results {
+    &>div {
+        top: 14px;
+    }
+
+    .searched-list {
+        z-index: 1;
+        max-height: 500px;
+        overflow: auto;
+        background-color: #ccc;
+    }
+}

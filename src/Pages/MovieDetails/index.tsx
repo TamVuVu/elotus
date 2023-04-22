@@ -19,7 +19,6 @@ export const MoviesDetails = () => {
   const getImageUrl = (size: string, path: string) =>
     imageConfig.base_url + size + path;
   const { config } = useSelector((state: any) => state);
-  // console.log(config);
 
   const genres = movieDetails?.genres?.map((genre) => genre.name)?.join(", ");
   useEffect(() => {

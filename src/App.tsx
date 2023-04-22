@@ -30,7 +30,10 @@ function App() {
           />
         )}
         <Routes>
-          <Route path="/" element={"<Home />"} />
+          <Route
+            path="/"
+            element={<h1 className="text-center font-bold">Home </h1>}
+          />
         </Routes>
         <div className="content">
           <Outlet />
